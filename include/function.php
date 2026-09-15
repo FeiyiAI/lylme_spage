@@ -1095,3 +1095,29 @@ function rate_limit($key, $max = 20, $window = 60)
     fclose($fp);
     return $allowed;
 }
+
+
+if (!function_exists('theme_file')) {
+    /**
+     * 解析主题文件路径（带目录穿越防护）
+     * 优先返回 template/<当前主题>/<file>，否则回退到 template/default/<file>
+     */
+    function theme_file($file) {
+        $file = (string) $file;
+        if ($file === '') { return ''; }
+        $file = str_replace(array('..\\', '../'), '', $file);
+        $file = ltrim($file, '/');
+        global $template;
+        $tpl = isset($template) ? basename((string) $template) : 'default';
+        $base = dirname(__FILE__) . '/../template/';
+        $themePath = $base . $tpl . '/' . $file;
+        if (file_exists($themePath)) {
+            return $themePath;
+        }
+        $def = $base . 'default/' . $file;
+        if (file_exists($def)) {
+            return $def;
+        }
+        return $themePath;
+    }
+}

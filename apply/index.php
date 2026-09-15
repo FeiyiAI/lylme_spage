@@ -1,5 +1,9 @@
 <?php
 include("../include/common.php");
+if (function_exists('theme_file') && empty($_GET['url']) && empty($_GET['submit']) && empty($_POST['authcode'])) {
+    $sf_tf = theme_file('apply.php');
+    if (!empty($sf_tf) && file_exists($sf_tf)) { include($sf_tf); exit; }
+}
 $grouplists = $DB->query("SELECT * FROM `lylme_groups` WHERE `group_pwd` = 0");
 if (!empty($url = isset($_GET['url']) ? $_GET['url'] : null)) {
     header('Content-Type:application/json');

@@ -1,4 +1,9 @@
-<?php include("../include/common.php"); ?>
+<?php include("../include/common.php");
+if (function_exists('theme_file')) {
+    $sf_tf = theme_file('about.php');
+    if (!empty($sf_tf) && file_exists($sf_tf)) { include($sf_tf); exit; }
+}
+?>
 <html lang="zh-cn">
 
 <head>
